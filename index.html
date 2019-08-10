@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./data.js"></script>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 初始化canvas
+    var canvas = document.createElement('canvas');
+    canvas.width = 500;
+    canvas.height = 500;
+    canvas.style.border = '1px solid #ccc';
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+    //克隆数据
+    var newArr = JSON.parse(JSON.stringify(data));
+    //求value总和
+    var num = 0;
+    for (var i = 0; i < newArr.length; i++) {
+        num += newArr[i].value;
+    };
+    //单位度数
+    var deg = Math.PI / 180;
+    // 颜色组
+    var colors = [];
+    //度数组
+    var degs = [];
+    //求出各自的颜色和度数
+    for (var i = 0; i < newArr.length; i++) {
+        colors.push(newArr[i].color);
+        degs.push(newArr[i].value / num * 360);
+    };
+    var start = -90;
+
+    function xuanran(x, y) {
+        for (var i = 0; i < degs.length; i++) {
+            var end = degs[i];
+            ctx.save();
+            ctx.beginPath();
+            ctx.fillStyle = colors[i];
+            ctx.moveTo(250, 250);
+            ctx.arc(250, 250, 150, start * deg, (start + end) * deg);
+            ctx.fill();
+            ctx.closePath();
+            ctx.restore();
+            start += end;
+
+
+        };
+    };
+    xuanran();
+    //白圆
+    function baiyuan() {
+        ctx.save();
+
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.moveTo(250, 250);
+        ctx.arc(250, 250, 100, 0, 360 * deg);
+        ctx.fill();
+        ctx.closePath();
+        ctx.restore();
+    }
+    baiyuan();
+
+    //    数据说明
+    for (var i = 0; i < newArr.length; i++) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = colors[i];
+        ctx.textBaseline = 'top';
+        ctx.rect(20, 20 * (i + 1), 35, 15);
+        ctx.fillText(newArr[i].name, 60, 21 * (i + 1))
+        ctx.fill();
+        ctx.closePath();
+        ctx.restore();
+    }
+
+
+
+
+</script>
+<script>
+    var canvas1 = document.createElement('canvas');
+    canvas1.width = 500;
+    canvas1.height = 500;
+    canvas1.style.border = '1px solid #ccc';
+    document.body.appendChild(canvas1);
+    var ctx1 = canvas1.getContext('2d');
+    var deg = Math.PI / 180;
+    //圆
+    function yuan(color,x,y,around,startdeg,enddeg) {
+        ctx1.save();
+        ctx1.fillStyle = color;
+        ctx1.beginPath();
+        ctx1.moveTo(x, y);
+      
+        ctx1.arc(x,y,around,(startdeg * deg),(enddeg * deg));
+        ctx1.fill();
+        ctx1.closePath();
+        ctx1.restore();
+        console.log(color,x,y,around,startdeg,enddeg);
+    }
+    // 头
+    var head = yuan('yellow',250, 250, 200, 0,345);
+    var eye = yuan('white',300,170,28,0,360);
+    var eye_ = yuan('black',310,180,10,0,360);
+    for(var i = 1; i <= 7; i++){
+        ctx1.save();
+        ctx1.beginPath();
+        ctx1.fillStyle = '#ccc';
+        ctx1.rect(200 + (i *15), 55, 3, 40);
+        ctx1.fill();
+        ctx1.closePath();
+        ctx1.restore();
+    }
+
+</script>
+
+</html>
